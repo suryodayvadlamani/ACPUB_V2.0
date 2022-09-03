@@ -19,7 +19,7 @@ export default NextAuth({
       return clientPromise.then(async (client) => {
         let return_value = true;
         try {
-          const db = await client.db("story_wheel");
+          const db = await client.db("ACPUB");
           const ud = await db
             .collection("profiles")
             .find({ email: user.email })
@@ -29,6 +29,22 @@ export default NextAuth({
           return_value = false;
         }
         return return_value;
+      });
+    },
+    async session({ session, user }) {
+      return clientPromise.then(async (client) => {
+        try {
+          const db = await client.db("ACPUB");
+          const ud = await db
+            .collection("profiles")
+            .find({ email: user.email })
+            .toArray();
+          session.user = { ...session.user, ...ud[0] };
+        } catch (err) {
+          return Promise.reject(session);
+        }
+
+        return Promise.resolve(session);
       });
     },
   },

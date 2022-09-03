@@ -3,3 +3,42 @@
 @tailwind components;
 /* purgecss end ignore */
 @tailwind utilities;
+
+
+@layer base {
+  :root {
+    --color-text-muted: 21,49,85;
+    --color-button-accent: 36,54,71;
+    --color-button-accent-hover: 204, 78, 1;
+    --color-button-muted: 212, 255, 122;
+    --color-app-fill: 240,253,256;
+    --color-text-base: 7,20,33;
+    --color-fill: 163,179,193;
+    --color-text-nav-base: 36,54,71;
+    --color-text-inverted: 235,248,256;
+  }
+  .dark {
+    --color-text-muted: 254, 202, 202;
+    --color-button-accent: 36,54,71;
+    --color-button-accent-hover: 204, 78, 1;
+    --color-button-muted: 239, 68, 68;
+    --color-fill: 36,54,71;
+    --color-app-fill: 7,20,33;
+    --color-text-nav-base: 163,179,193;
+    --color-text-header-base: 235,248,256;
+    --color-text-base: 142,153,164;
+    --color-text-inverted:  7,20,33;
+  }
+  .light {
+    --color-text-muted: 21,49,85;
+    --color-button-accent: 36,54,71;
+    --color-button-accent-hover: 204, 78, 1;
+    --color-button-muted: 212, 255, 122;
+    --color-app-fill: 240,253,256;
+    --color-text-base: 7,20,33;
+    --color-fill: 163,179,193;
+    --color-text-nav-base: 36,54,71;
+    --color-text-header-base:7,20,33;
+    --color-text-inverted: 235,248,256;
+  }
+}

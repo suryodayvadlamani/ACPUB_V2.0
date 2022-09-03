@@ -56,7 +56,7 @@ const Signin = () => {
                       <div className="text-center">
                         <img
                           className="mx-auto w-48"
-                          src="light.png"
+                          src="/static/images/light.png"
                           alt="logo"
                         />
                         <h4 className="text-xl font-semibold mt-1 mb-12 pb-1">

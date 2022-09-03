@@ -7,7 +7,7 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
     const type = _req.query.type;
 
     const client = await clientPromise;
-    const db = await client.db("story_wheel");
+    const db = await client.db("ACPUB");
     const ud = await db.collection("questions").find({ type }).toArray();
 
     res.status(200).json(ud);

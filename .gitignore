@@ -272,7 +272,7 @@ FakesAssemblies/
 *.GhostDoc.xml
 
 #next files
-.next
+.next/
 
 # Node.js Tools for Visual Studio
 .ntvs_analysis.dat

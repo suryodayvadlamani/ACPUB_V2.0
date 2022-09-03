@@ -1,75 +1,113 @@
-import { getSession } from "next-auth/react";
-import { useState } from "react";
-import clientPromise from "../lib/mongodb";
-const IndexPage = ({ user, ud }) => {
-  const [questionData, setQuestionData] = useState([]);
-  const fetchData = async (type) => {
-    const req = await fetch(`/api/type?type=${type}`);
-    const newData = await req.json();
-    console.log(newData);
-    setQuestionData(newData);
-  };
-
-  const handleClick = (e, type) => {
-    e.preventDefault();
-    fetchData(type);
-  };
-
+const IndexPage = () => {
   return (
-    <section className="flex flex-col h-[calc(100vh-3.5rem)] overflow-y-auto  bg-slate-400">
-      <div className="lg:flex lg:flex-wrap g-0">
-        <div className="lg:w-2/5 px-4 md:px-0 my-2 items-center justify-between flex flex-col">
-          {ud.map((type, index) => (
-            <button key={index} onClick={(e) => handleClick(e, type)}>
-              {type}
-            </button>
-          ))}
+    <div className="bg-skin-app-fill h-[calc(100%-3.5rem)] overflow-y-auto text-skin-base px-3">
+      <div className="flex flex-col mx-24 mb-2 leading-6">
+        <h3 className="my-4 text-3xl"> Quick Tips </h3>
+        <strong className="text-skin-header-base"> Navigation </strong>
+        <div className="ml-1 leading-7">
+          <ul style={{ listStyleType: "disc" }}>
+            <li>
+              Academic Publishing Dashboard is divided into four main sections
+              (Market, Publisher, Title, and School), allowing you to start
+              information discovery and analysis from subject-area reports with
+              different data aggregation levels.
+            </li>
+            <li>
+              You can move between sections and reports, based on your needs and
+              research objectives. Filtered data will not change with navigation
+              between tabs or reports, only presentation of the data
+            </li>
+          </ul>
         </div>
-        <div className="lg:w-2/5 px-4 md:px-0">
-          <form>
-            {questionData.length > 0 &&
-              questionData.map((question, index) => (
-                <div className="mb-4" key={index}>
-                  <label>{question.question}</label>
-                  <input
-                    type="text"
-                    autoComplete="off"
-                    required
-                    className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    placeholder={question.question}
-                  />
-                </div>
-              ))}
-          </form>
-          <button>Submit</button>
+
+        <br />
+        <strong className="text-skin-header-base"> Filters </strong>
+        <div className="ml-1 leading-7">
+          <ul style={{ listStyleType: "disc" }}>
+            <li>
+              You can search for specific information by applying a filter using
+              point-and-click on any value in the table or chart OR using
+              purpose-built filters.
+            </li>
+            <li>
+              School and Book icons on the right side of Menu will bring up a
+              page with attribute collection in each area.
+            </li>
+            <li>
+              Filtered value is highlighted in green and field/value filtered is
+              added Current Filters area, top center of the page.
+            </li>
+            <li>
+              The filters affect the entire dataset and persist when you move
+              between sections or individual reports
+            </li>
+            <li>
+              You can clear the filter by updating your selection in the same
+              field, clicking [X] for the line in Current Selections section, or
+              using "Clear All" button
+            </li>
+            <li>
+              "No Filters Applied" message is displayed when all filters are
+              cleared.
+            </li>
+            <li>
+              Back and Forward navigation buttons in top left corner allow you
+              to back-step your filters/selections.
+            </li>
+          </ul>
         </div>
+
+        <br />
+
+        <strong className="text-skin-header-base"> Data Export </strong>
+        <div className="ml-1 leading-7">
+          <ul style={{ listStyleType: "disc" }}>
+            <li>
+              All reports have export to Excel button in the top right corner.
+            </li>
+            <li>
+              There are several "adoption reports" with different levels of
+              details. Most commongly used are:
+              <ol style={{ listStyleType: "decimal" }} className="ml-6">
+                <li>
+                  "Adoption by Course" on Title tab is aggregated on Course
+                  level. Allows to view and export up to 20,000 courses.{" "}
+                </li>
+                <li>
+                  "Title Adoption Details" on School tab is on Section level
+                  with Instructor Name/Email fields. Allows to view and export
+                  up to 20,000 sections.
+                </li>
+                <li>
+                  "Detailed Adoption Report" on Adoption Report tab contains the
+                  most attributes and allows to view and export up to 10,000
+                  courses at a time.
+                </li>
+              </ol>
+            </li>
+            <li>
+              Due to size, several reports in the dashboard have limits to
+              number of records selected. Try to narrow your search using
+              filters.
+            </li>
+            <li>
+              Please send you requests for larger data extracts to
+              <a href="mailto:support@edudatahub.com">support@edudatahub.com</a>
+            </li>
+          </ul>
+        </div>
+        <br />
+        <br />
+        <a href="/">
+          <img
+            style={{ height: "50px" }}
+            src="/static/images/Powered-By-Qlik-Mark-Horizontal_RGB.png"
+            alt="Powered by Qlik"
+          />
+        </a>
       </div>
-    </section>
+    </div>
   );
 };
 
 export default IndexPage;
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-  if (!session) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/auth/signin",
-      },
-      props: {},
-    };
-  }
-  try {
-    const client = await clientPromise;
-    const db = await client.db("story_wheel");
-    const ud = await db.collection("types").find().toArray();
-    return {
-      props: {
-        user: session.user,
-        ud: ud.map((x) => x.type),
-      },
-    };
-  } catch (err) {}
-}
